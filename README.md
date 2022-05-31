@@ -1,0 +1,2 @@
+-   [ ] Rewrite Game Class as gameLoop Function
+-   [ ] Sketch Graphics

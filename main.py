@@ -90,7 +90,6 @@ class Game:
             self.screen.fill(blackRGB)
                 
             # Level Setup
-                # Switch Code Not Built
                 # Needs Level Clear
             # Render Level
             self.level.render()
