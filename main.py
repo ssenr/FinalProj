@@ -1,5 +1,6 @@
 # Dependencies
 import pygame
+import levels as lvl
 from sys import exit
 from settings import *
 
@@ -26,6 +27,13 @@ class Game:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     exit()
+                    
+                # Debug Key
+                # if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                #     levelOne = lvl.One
+                #     levelOne.printName()
+                
+            # Game Setup
             self.screen.fill(blackRGB)
             pygame.display.update()
             self.clock.tick(FPS)
