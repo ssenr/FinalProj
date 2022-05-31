@@ -19,7 +19,21 @@ class Game:
         
         self.screen = pygame.display.set_mode((screenWidth, screenHeight))
         self.clock = pygame.time.Clock()
-    
+        
+        # Init Levels
+        self.levelOne = lvl.level(1)
+        self.levelTwo = lvl.level(2)
+        self.levelThree = lvl.level(3)
+        
+        # Init Level One
+        self.level = self.levelOne
+        
+        # level Progression
+        self.levelProgress = {
+            "levelOne": self.levelOne.getStatus(),
+            "levelTwo": self.levelTwo.getStatus()
+        }
+            
     # Game Loop
     def run(self):
         while True:
@@ -28,13 +42,26 @@ class Game:
                     pygame.quit()
                     exit()
                     
-                # Debug Key
+                # Debug Keys
+                # if event.type == pygame.KEYDOWN and event.key == pygame.K_b:
+                #     self.level.completed()
+                #     self.levelProgress["levelOne"] = self.level.getStatus()
+                #     # pass
                 # if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
-                #     levelOne = lvl.One
-                #     levelOne.printName()
-                
+                #     x = self.levelProgress.get("levelOne")
+                #     print(x)
+                #     # pass
+                    
             # Game Setup
             self.screen.fill(blackRGB)
+                
+            # Level Setup
+                # Switch Code Not Built
+                # Needs Level Clear
+            # Render Level
+            self.level.render()
+
+            # Update
             pygame.display.update()
             self.clock.tick(FPS)
 
