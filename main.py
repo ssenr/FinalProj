@@ -47,7 +47,7 @@ class Game:
         #     self.updateProgress()
         #     # pass
         if event.type == pygame.KEYDOWN and event.key == pygame.K_m:
-            print(self.level.whatAmI())
+            print(self.level.num())
     
     # Allows us to progress a level
     def levelUp(self):

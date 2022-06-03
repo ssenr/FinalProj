@@ -20,7 +20,7 @@ class level:
         # Misc.
         self.status = False
     
-    def whatAmI(self):
+    def num(self):
         return self.levelNum
     
     def render(self):
