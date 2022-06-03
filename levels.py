@@ -1,6 +1,8 @@
 # Pygame Import
 import pygame
-
+from settings import * 
+from tiling import Tile
+from player import Player
 # Level Classes
 # Each level has slightly different behaviour
 # While creating different classes kind of defeats the purpose of using a class
@@ -19,12 +21,27 @@ class level:
         
         # Misc.
         self.status = False
+        
+        # Test
+        self.initMap()
+    
+    def initMap(self):
+        # enumerate() counts each iteration
+        for row_index,row in enumerate(map):
+            for column_index, column in enumerate(row):
+                x = column_index * tileSize
+                y = row_index * tileSize
+                if column == 'x':
+                    Tile((x,y), [self.visibleSprites,self.invisibleSprites])
+                if column == 'p':
+                    Player((x,y), [self.visibleSprites])
+                    
     
     def num(self):
         return self.levelNum
     
     def render(self):
-        pass
+        self.visibleSprites.draw(self.displaySurf)
     
     def completed(self):
         # Function denotes the completion of a level

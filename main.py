@@ -22,18 +22,18 @@ class Game:
         
         # Init Levels
         self.levelOne = lvl.level(1)
-        self.levelTwo = lvl.level(2)
-        self.levelThree = lvl.level(3)
+        # self.levelTwo = lvl.level(2)
+        # self.levelThree = lvl.level(3)
         
         # Init Level One
         self.level = self.levelOne
         
         # level Progression Check
-        self.levelProgress = {
-            1 : self.levelOne.getStatus(),
-            2 : self.levelTwo.getStatus(),
-            3 : self.levelThree.getStatus()
-        }
+        # self.levelProgress = {
+        #     1 : self.levelOne.getStatus(),
+        #     2 : self.levelTwo.getStatus(),
+        #     3 : self.levelThree.getStatus()
+        # }
     
     # Allows us to use modifiable debug code within our gameLoop
     def debugMode(self, event):
