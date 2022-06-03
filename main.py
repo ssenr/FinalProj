@@ -5,8 +5,6 @@ from sys import exit
 from settings import *
 
 # Game Class
-# rando
-
 # When code scales, it will be much easier to modify this class rather than a function
 class Game:
     # Init
