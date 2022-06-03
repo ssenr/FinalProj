@@ -1,7 +1,7 @@
 # Game Info
 gameName = "Test Game"
 screenWidth = 1280
-screenHeight = 720
+screenHeight = 736
 FPS = 60
 tileSize = 32
 
