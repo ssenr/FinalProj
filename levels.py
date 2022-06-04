@@ -42,6 +42,7 @@ class level:
     
     def render(self):
         self.visibleSprites.draw(self.displaySurf)
+        self.visibleSprites.update()
     
     def completed(self):
         # Function denotes the completion of a level
