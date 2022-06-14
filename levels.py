@@ -27,9 +27,9 @@ class level:
     
     def initMap(self):
         mapData = {
-            'boundary': importCSV("data/graphics/csv/main_floor_BLOCKS.csv"),
-            'trees': importCSV("data/graphics/csv/main_floor_Trees.csv"),
-            'spawnPoint': importCSV("data/graphics/csv/main_floor_SpawnPoint.csv")
+            'boundary': importCSV("data/graphics/mapData/main_floor_BLOCKS.csv"),
+            'trees': importCSV("data/graphics/mapData/main_floor_Trees.csv"),
+            'spawnPoint': importCSV("data/graphics/mapData/main_floor_SpawnPoint.csv")
         }
         # enumerate() counts each iteration
         for style, layout in mapData.items():
@@ -49,9 +49,9 @@ class level:
     def num(self):
         return self.levelNum
     
-    def render(self):
+    def render(self, deltaTime = 1):
         self.visibleSprites.customDraw(self.player)
-        self.visibleSprites.update()
+        self.visibleSprites.update(deltaTime)
     
     def completed(self):
         # Function denotes the completion of a level

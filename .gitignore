@@ -1,9 +1,3 @@
-/data/graphics/SingleSprites
-/data/graphics/PSD
-/data/graphics/Anim
-/data/graphics/decorative_props.png
-/data/graphics/mainlevbuild.png
-/data/graphics/other_props.png
-/data/graphics/public-license.txt
-/data/graphics/water_env.png
+/data/graphics/testSprites
+/data/graphics/tileset
 /__pycache__

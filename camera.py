@@ -24,7 +24,7 @@ class camGroupY(pygame.sprite.Group):
         
     def customDraw(self, player):
         
-        self.iSurf.fill(red)
+        self.iSurf.fill(tsBlack)
         
         self.offset.x = player.rect.centerx - self.hWidth
         self.offset.y = player.rect.centery - self.hHeight

@@ -1,5 +1,6 @@
 # Dependencies
 import pygame
+import time
 from sys import exit
 from settings import *
 from levels import *
@@ -25,9 +26,14 @@ class Game:
     
     # Game Loop
     def run(self):
-        global debugStatus
-        debugStatus = False
+        prevTime = time.time()
         while True:
+            
+            # Delta Time
+            now = time.time()
+            deltaTime = now - prevTime
+            prevTime = now
+            
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -37,7 +43,7 @@ class Game:
             self.screen.fill(blackRGB)
                 
             # Render Level
-            self.level.render()
+            self.level.render(deltaTime)
 
             # Update
             pygame.display.update()
