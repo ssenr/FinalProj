@@ -78,13 +78,13 @@ class Game:
                     pygame.quit()
                     exit()
                 
-                # Debug Key
-                if event.type == pygame.KEYDOWN and event.key == pygame.K_d:
-                    debugStatus = not debugStatus
-                    print(debugStatus)
-                if debugStatus == True:
-                    # self.debugMode(event)
-                    self.debugMode(event)
+                # # Debug Mode
+                # if event.type == pygame.KEYDOWN and event.key == pygame.K_d:
+                #     debugStatus = not debugStatus
+                #     print(debugStatus)
+                # if debugStatus == True:
+                #     # self.debugMode(event)
+                #     self.debugMode(event)
                     
             # Game Setup
             self.screen.fill(blackRGB)
