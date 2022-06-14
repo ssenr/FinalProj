@@ -13,7 +13,7 @@ class camGroupY(pygame.sprite.Group):
         self.offset = pygame.math.Vector2()
 
         # floor
-        self.floorSurf = pygame.image.load("data/graphics/tilemap/floor.png").convert()
+        self.floorSurf = pygame.image.load("data/graphics/tilemap/castle_floor.png").convert()
         self.floorRect = self.floorSurf.get_rect(topleft = (0,0))
         
         # Scale

@@ -7,9 +7,9 @@ tileSize = 32
 
 # Misc.
 blackRGB = (0,0,0)
-tsBlack = (25,23,23)
+tsBlack = (8,14,22)
 redRGB = (255,0,0)
-scaleFac = 2.5
+scaleFac = 2.7
 
 # dirs.
 iconPath = "data/img/testIcon.jpg"

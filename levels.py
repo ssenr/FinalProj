@@ -27,9 +27,9 @@ class level:
     
     def initMap(self):
         mapData = {
-            'boundary': importCSV("data/graphics/mapData/main_floor_BLOCKS.csv"),
-            'trees': importCSV("data/graphics/mapData/main_floor_Trees.csv"),
-            'spawnPoint': importCSV("data/graphics/mapData/main_floor_SpawnPoint.csv")
+            'boundary': importCSV("data/graphics/mapData/cstle_BOUNDARY.csv"),
+            # 'trees': importCSV("data/graphics/mapData/main_floor_Trees.csv"),
+            # 'spawnPoint': importCSV("data/graphics/mapData/main_floor_SpawnPoint.csv")
         }
         # enumerate() counts each iteration
         for style, layout in mapData.items():
@@ -40,8 +40,8 @@ class level:
                         y = row_index * tileSize
                         if style == 'boundary':
                             Tile((x,y), [self.invisibleSprites], 'boundary')
-                        if style == 'trees':
-                            Tile((x,y), [self.invisibleSprites], 'trees')
+                        # if style == 'trees':
+                        #     Tile((x,y), [self.invisibleSprites], 'trees')
                         if style == 'spawnPoint':
                             pass
         self.player = Player((400,300), [self.visibleSprites], self.invisibleSprites)
