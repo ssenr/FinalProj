@@ -1,5 +1,6 @@
 import pygame
 from settings import * 
+from scripts import * 
 
 # pygame.sprite.Sprite for inheritance
 class Player(pygame.sprite.Sprite):
@@ -10,31 +11,97 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(topleft = pos)
         self.hitbox = self.rect.inflate(0,-26)
         
+        # Anim Config
+        self.plrAnims()
+        self.status = 'up'
+        self.frameIndex = 0
+        self.animationSpeed = 0.15
+        
         # X, Y 2D Vector
         self.direction = pygame.math.Vector2()
         self.speed = 5
         
         self.invisibleSprites = invisibleSprites
+        
+        self.attacking = False
+        self.attackCooldown = 400
+        self.attackTime = None
+    
+    def plrAnims(self):
+        animPath = "data/graphics/mainCharAnim/"
+        self.animations = {
+            # Run Keys
+            'up_run': [],
+            'dwn_run': [],
+            'lft_run': [],
+            'rght_run': [],
+            
+            # Idle Keys
+            'up_idle': [],
+            'dwn_idle': [],
+            'lft_idle': [],
+            'rght_idle': [],
+            
+            # Attack Keys
+            'up_attack': [],
+            'dwn_attack': [],
+            'lft_attack': [],
+            'rght_attack': []
+        }
+        for animation in self.animations.keys():
+            fullPath = animPath + animation
+            self.animations[animation] = importFolder(fullPath)
     
     def input(self):
-        keys = pygame.key.get_pressed()
-        
-        # X Movement
-        if keys[pygame.K_a]:
-            self.direction.x = -1
-        elif keys[pygame.K_d]:
-            self.direction.x = 1
-        else:
-            self.direction.x = 0
+        if not self.attacking:
+            keys = pygame.key.get_pressed()
             
-        # Y Movement
-        if keys[pygame.K_w]:
-            self.direction.y = -1
-        elif keys[pygame.K_s]:
-            self.direction.y = 1
-        else:
-            self.direction.y = 0
+            # X Movement
+            if keys[pygame.K_a]:
+                self.direction.x = -1
+                self.status = 'lft'
+            elif keys[pygame.K_d]:
+                self.direction.x = 1
+                self.status = 'rght'
+            else:
+                self.direction.x = 0
+                
+            # Y Movement
+            if keys[pygame.K_w]:
+                self.direction.y = -1
+                self.status = 'up'
+            elif keys[pygame.K_s]:
+                self.direction.y = 1
+                self.status = 'dwn'
+            else:
+                self.direction.y = 0
+                
+            # Attack      
+            if keys[pygame.K_SPACE]:
+                self.attacking = True
+                self.attackTime = pygame.time.get_ticks()
+                print('attack')
         
+    def getStatus(self):
+        # Idle Status
+        if self.direction.x == 0 and self.direction.y == 0:
+            if not 'idle' in self.status and not 'attack' in self.status:
+                self.status = self.status + '_idle'
+        
+        # Attack Status
+        if self.attacking:
+            self.direction.x = 0
+            self.direction.y = 0
+            if not 'attack' in self.status:
+                if 'idle' in self.status:
+                    self.status = self.status.replace('_idle', '_attack')
+                else:
+                    self.status = self.status +'_attack'
+        # Stop Attacking
+        else:
+            if 'attack' in self.status:
+                self.status = self.status.repace('_attack', '')
+    
     def plrMove(self, speed):
         # Convert/Normalize to unit vector
         if self.direction.magnitude() != 0:
@@ -65,7 +132,26 @@ class Player(pygame.sprite.Sprite):
                         self.hitbox.bottom = sprite.hitbox.top
                     if self.direction.y < 0:
                         self.hitbox.top = sprite.hitbox.bottom
+    
+    def cooldowns(self):
+        currentTime = pygame.time.get_ticks()
+        if self.attacking:
+            if currentTime - self.attackTime >= self.attackCooldown:
+                self.attacking = False
+    
+    def animate(self):
+        animation = self.animations[self.status]
+
+        self.frameIndex += self.animationSpeed
+        if self.frameIndex >= len(animation):
+            self.frameIndex = 0
+        
+        self.image = animation[int(self.frameIndex)]
+        self.rect = self.image.get_rect(center = self.hitbox.center)
         
     def update(self):
         self.input()
+        self.cooldowns()
+        self.getStatus()
+        self.animate()
         self.plrMove(self.speed)

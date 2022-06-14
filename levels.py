@@ -1,4 +1,5 @@
 # Pygame Import
+from turtle import width
 import pygame
 from settings import * 
 from scripts import * 
@@ -43,14 +44,10 @@ class level:
                             Tile((x,y), [self.invisibleSprites], 'boundary')
                         if style == 'trees':
                             Tile((x,y), [self.invisibleSprites], 'trees')
-        #         # Spawn invisbleSprites and Player
-        #         if column == 'x':
-        #             Tile((x,y), [self.visibleSprites,self.invisibleSprites])
-        #         if column == 'p':
-        #             self.player = Player((x,y), [self.visibleSprites], self.invisibleSprites)
+                        if style == 'spawnPoint':
+                            pass
         self.player = Player((400,300), [self.visibleSprites], self.invisibleSprites)
-                    
-    
+        
     def num(self):
         return self.levelNum
     
