@@ -9,4 +9,3 @@ def importCSV(path):
             tMap.append(list(row))
         return tMap
             
-

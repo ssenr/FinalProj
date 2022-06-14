@@ -1,7 +1,7 @@
 # Pygame Import
 import pygame
 from settings import * 
-from importCSV import * 
+from scripts import * 
 from tiling import Tile
 from player import Player
 # Level Classes
@@ -28,7 +28,9 @@ class level:
     
     def initMap(self):
         mapData = {
-            'boundary': importCSV("data/graphics/csv/main_floor_BLOCKS.csv")
+            'boundary': importCSV("data/graphics/csv/main_floor_BLOCKS.csv"),
+            'trees': importCSV("data/graphics/csv/main_floor_Trees.csv"),
+            'spawnPoint': importCSV("data/graphics/csv/main_floor_SpawnPoint.csv")
         }
         # enumerate() counts each iteration
         for style, layout in mapData.items():
@@ -38,7 +40,9 @@ class level:
                         x = column_index * tileSize
                         y = row_index * tileSize
                         if style == 'boundary':
-                            Tile((x,y), [self.invisibleSprites], 'invisible')
+                            Tile((x,y), [self.invisibleSprites], 'boundary')
+                        if style == 'trees':
+                            Tile((x,y), [self.invisibleSprites], 'trees')
         #         # Spawn invisbleSprites and Player
         #         if column == 'x':
         #             Tile((x,y), [self.visibleSprites,self.invisibleSprites])

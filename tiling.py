@@ -9,7 +9,14 @@ class Tile(pygame.sprite.Sprite):
         super().__init__(groups)
         self.spriteType = spriteType
         self.image = surf
-        self.rect = self.image.get_rect(topleft = pos)
+        
+        #Offset Config
+        if spriteType == 'trees':
+            self.rect = self.image.get_rect(topleft = pos)
+            self.hitbox = self.rect.inflate(-30,0)
+        else:
+            self.rect = self.image.get_rect(topleft = pos)
+            self.hitbox = self.rect.inflate(0,25)
         
         # Making hitbox for tile smaller
-        self.hitbox = self.rect.inflate(0,-2) 
+        # self.hitbox = self.rect.inflate(0,25) 
