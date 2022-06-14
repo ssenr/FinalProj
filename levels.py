@@ -46,17 +46,8 @@ class level:
                             pass
         self.player = Player((400,300), [self.visibleSprites], self.invisibleSprites)
         
-    def num(self):
-        return self.levelNum
     
     def render(self, deltaTime = 1):
         self.visibleSprites.customDraw(self.player)
         self.visibleSprites.update(deltaTime)
     
-    def completed(self):
-        # Function denotes the completion of a level
-        self.status = True
-    
-    def getStatus(self):
-        # Return Status of Level
-        return self.status
