@@ -12,4 +12,4 @@ class Tile(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(topleft = pos)
         
         # Making hitbox for tile smaller
-        self.hitbox = self.rect.inflate(0,-5) 
+        self.hitbox = self.rect.inflate(0,-2) 

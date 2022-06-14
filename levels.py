@@ -1,6 +1,7 @@
 # Pygame Import
 import pygame
 from settings import * 
+from importCSV import * 
 from tiling import Tile
 from player import Player
 # Level Classes
@@ -26,11 +27,18 @@ class level:
         self.initMap()
     
     def initMap(self):
-        # # enumerate() counts each iteration
-        # for row_index,row in enumerate(map):
-        #     for column_index, column in enumerate(row):
-        #         x = column_index * tileSize
-        #         y = row_index * tileSize
+        mapData = {
+            'boundary': importCSV("data/graphics/csv/main_floor_BLOCKS.csv")
+        }
+        # enumerate() counts each iteration
+        for style, layout in mapData.items():
+            for row_index,row in enumerate(layout):
+                for column_index, column in enumerate(row):
+                    if column != '-1':
+                        x = column_index * tileSize
+                        y = row_index * tileSize
+                        if style == 'boundary':
+                            Tile((x,y), [self.invisibleSprites], 'invisible')
         #         # Spawn invisbleSprites and Player
         #         if column == 'x':
         #             Tile((x,y), [self.visibleSprites,self.invisibleSprites])
