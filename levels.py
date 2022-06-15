@@ -8,6 +8,7 @@ from tiling import Tile
 from player import Player
 from random import choice
 from ui import UI
+from enemy import Enemy
 # Level Classes
 # Each level has slightly different behaviour
 # While creating different classes kind of defeats the purpose of using a class
@@ -37,9 +38,8 @@ class level:
             # BOUNDARIES
             'hard_boundary': importCSV("data/graphics/mapData/cstle_HARD_BOUNDARY.csv"),
             'wall_boundary': importCSV("data/graphics/mapData/cstle_WALL_BOUNDARY.csv"),
-            'pillar_bounds': importCSV("data/graphics/mapData/cstle_PILLAR_BOUNDS.csv")
-            # 'trees': importCSV("data/graphics/mapData/main_floor_Trees.csv"),
-            # 'spawnPoint': importCSV("data/graphics/mapData/main_floor_SpawnPoint.csv")
+            'pillar_bounds': importCSV("data/graphics/mapData/cstle_PILLAR_BOUNDS.csv"),
+            'entities': importCSV("data/graphics/mapData/cstle_ENTITIES_SPAWN.csv")
         }
         graphics = {
             'pillar': importFolder("data/graphics/tilemap/pillar")
@@ -59,13 +59,20 @@ class level:
                         if style == 'pillar_bounds':
                             pillarImage = choice(graphics['pillar'])
                             Tile((x,y), [self.visibleSprites,self.invisibleSprites], 'pillar', pillarImage)
-                        # if style == 'trees':
-                        #     Tile((x,y), [self.invisibleSprites], 'trees')
-                        if style == 'spawnPoint':
-                            pass
-        # Pass attack Instance through bcuz we call it in player.py
-        self.player = Player((400,300), [self.visibleSprites], self.invisibleSprites, self.attackInstance, self.endAttack)
-        
+                        
+                        if style == 'entities':
+                            if column == '1':
+                                self.player = Player(
+                                    (x,y), 
+                                    [self.visibleSprites], 
+                                    self.invisibleSprites, 
+                                     # Pass attack Instance through bcuz we call it in player.py
+                                    self.attackInstance, 
+                                    self.endAttack
+                                    )
+                            else:
+                                Enemy((x,y),[self.visibleSprites],self.invisibleSprites)
+                                  
     def attackInstance(self):
         self.attack = attack(self.player, [self.visibleSprites])
     

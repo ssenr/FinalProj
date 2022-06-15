@@ -10,7 +10,7 @@ class attack(pygame.sprite.Sprite):
         # print(direction)
         
         # Hitbox
-        self.image = pygame.Surface((20,20))
+        self.image = pygame.image.load("data/graphics/misc/attackHitbox.png")
         
         # Spawn Box
         if direction == 'rght':
