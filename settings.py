@@ -16,6 +16,12 @@ iconPath = "data/img/testIcon.jpg"
 
 # Player
 loadingFrame = "data/graphics/anim_mc/up_idle/up_idle0000.png"
+player_data = {
+    'health': 100,
+    'damage': 10,
+    'speed' : 5,
+    'canAttack': True
+}
 
 # Weapons
 attack_data = {
@@ -30,8 +36,8 @@ attack_data = {
 skeleton_data= {
     'health': 100,
     'damage': 10,
-    'speed': 2,
+    'speed': 4.25,
     'knockback': 3,
-    'attack_radius': 120,
-    'notice_radius': 400
+    'attack_radius': 50,
+    'notice_radius': 300
 }

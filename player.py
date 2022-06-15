@@ -15,10 +15,6 @@ class Player(Entity):
         # Anim Config
         self.plrAnims()
         self.status = 'up'
-           
-        # X, Y 2D Vector
-        self.speed = 5
-        
         self.invisibleSprites = invisibleSprites
         
         self.attacking = False
@@ -28,11 +24,10 @@ class Player(Entity):
         self.endAttack = endAttack
 
         # Stats
-        self.stats = {
-            'health': 100,
-        }
-        self.health = self.stats['health']
+        self.health = player_data['health']
+        self.speed = player_data['speed']
         self.kills = 0
+
         
         
         

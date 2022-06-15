@@ -24,9 +24,10 @@ class Enemy(Entity):
         self.attack_radius = skeleton_data['attack_radius']
         self.notice_radius = skeleton_data['notice_radius']
         
-        self.canAttack = False
-
-        
+        self.canAttack = True
+        self.attackTime = None
+        self.attackCooldown = 400
+        self.animationSpeed += 0.4
         
     def importGraphics(self):
         animPath = "data/graphics/anim_enemy/"
@@ -70,34 +71,50 @@ class Enemy(Entity):
         distance = self.getDirDist(player)[0]
         direction = self.getDirDist(player)[1]
         
+        # Attack
+        if distance <= self.attack_radius and self.canAttack:
+            if not 'attack' in self.status:
+                self.frameIndex = 0
+            if 'attack' in self.status:
+                self.status = self.status.replace('_attack', '')
+            if 'idle' in self.status:
+                self.status = self.status.replace('idle', '_attack')
+            if not 'attack' in self.status:
+                # self.frameIndex = 0
+                self.status = self.status + '_attack'
+                
+        # Run
+        elif distance <= self.notice_radius and not 'idle' in self.status:
+            if '_attack' in self.status:
+                self.status = self.status.replace('_attack', '')
+            else:
+                self.status = self.status
+                
         # Idling
-        if direction[0] == 0 and direction[1] == 0 and distance >= self.attack_radius and distance >= self.notice_radius:
-            if not 'idle' in self.status and not 'attack' in self.status:
-                self.status = self.status +'_idle'
-        
-        if distance <= self.attack_radius and not 'idle' in self.status and self.canAttack != False:
-            self.status = self.status + '_attack'
-        if distance <= self.notice_radius and not 'idle' in self.status and not 'attack' in self.status:
-            self.status = self.status
-        
+        elif direction[0] == 0 and direction[1] == 0 and distance >= self.attack_radius and distance >= self.notice_radius:
+            if 'attack' in self.status:
+                self.status = self.status.replace('_attack', '')
+            if not 'attack' in self.status:
+                self.status = self.status + '_idle'
+                
         # elif not 'idle' in self.status and not 'attack' in self.status and not 'run' in self.status:
         #     self.status = self.status + '_idle'
-    
     def actions(self, player):
         if 'attack' in self.status:
             self.direction = self.getDirDist(player)[1]
-            match self.direction[0]:
-                case -1:
-                    self.status = 'lft'
-                case 1:
-                    self.status = 'rght'
-            match self.direction[1]:
-                case -1:
-                    self.status = 'up'
-                case 1:
-                    self.stauts = 'dwn'
-            print('attack')
-        elif not 'attack' in self.status and not 'idle' in self.status:
+            if self.direction.x > 0:
+                self.status = 'rght_attack'
+            elif self.direction.x < 0:
+                self.status = 'lft_attack'
+            
+            if self.direction.y > 0:
+                self.status = 'dwn_attack'
+            elif self.direction.y < 0:
+                self.status = 'up_attack'
+            self.attackTime = pygame.time.get_ticks()
+            
+                  
+        elif not '_attack' in self.status and not '_idle' in self.status:
             self.direction = self.getDirDist(player)[1]
             
             if self.direction.x > 0:
@@ -110,21 +127,38 @@ class Enemy(Entity):
             elif self.direction.y < 0:
                 self.status = 'up'
         else:
-            self.direction = pygame.math.Vector2()
-    
+            if self.direction.x > 0:
+                self.status = 'rght'
+            elif self.direction.x < 0:
+                self.status = 'lft'
+            
+            if self.direction.y > 0:
+                self.status = 'dwn'
+            elif self.direction.y < 0:
+                self.status = 'up'
+            self.direction.x = 0
+            self.direction.y = 0
+        
     def animate(self):
         animation = self.animations[self.status]
         self.frameIndex += self.animationSpeed
         if self.frameIndex >= len(animation):
+            if 'attack' in self.status:
+                self.canAttack = True
             self.frameIndex = 0
-            
         self.image = animation[int(self.frameIndex)]
         self.rect = self.image.get_rect(center = self.hitbox.center)
         
+    def cooldown(self):
+        if not self.canAttack:
+            currentTime = pygame.time.get_ticks()
+            if currentTime - self.attackTime >= self.attackCooldown:
+                self.canAttack = True
     
     def update(self):
         self.plrMove(self.speed)
         self.animate()
+        self.cooldown()
     
     def enemy_update(self, player):
         self.getStatus(player)
