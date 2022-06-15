@@ -1,5 +1,6 @@
 import pygame
 from settings import *
+from enemy import Enemy
 
 # Camnera Class
 class camGroupY(pygame.sprite.Group):
@@ -41,3 +42,9 @@ class camGroupY(pygame.sprite.Group):
         scaledRect = scaledSurf.get_rect(center = (self.hWidth, self.hHeight))
         
         self.displaySurf.blit(scaledSurf,scaledRect)
+        
+    def enemy_update(self,player):
+        enemySprites = [ sprite for sprite in self.sprites() if hasattr(sprite, 'spriteType') and sprite.spriteType == 'enemy']
+        for enemy in enemySprites:
+            enemy.enemy_update(player)
+            pass

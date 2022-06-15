@@ -30,8 +30,8 @@ attack_data = {
 skeleton_data= {
     'health': 100,
     'damage': 10,
-    'speed': 125,
-    'resistance': 3,
+    'speed': 2,
+    'knockback': 3,
     'attack_radius': 120,
     'notice_radius': 400
 }

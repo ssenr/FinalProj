@@ -4,17 +4,17 @@ class Entity(pygame.sprite.Sprite):
     def __init__(self,groups):
         super().__init__(groups)
         self.frameIndex = 0
-        self.animationSpeed = 0.5
+        self.animationSpeed = 0.25
         self.direction = pygame.math.Vector2()
         
-    def plrMove(self, speed, deltaTime = 1):
+    def plrMove(self, speed):
         # Convert/Normalize to unit vector
         if self.direction.magnitude() != 0:
             self.direction = self.direction.normalize()
         
-        self.hitbox.x += self.direction.x * (speed * deltaTime)
+        self.hitbox.x += self.direction.x * (speed)
         self.collide("X")
-        self.hitbox.y += self.direction.y * (speed * deltaTime)
+        self.hitbox.y += self.direction.y * (speed)
         self.collide("Y")
 
         # Center Sprite about Hitbox Center

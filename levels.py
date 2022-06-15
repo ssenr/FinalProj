@@ -2,7 +2,7 @@
 import pygame
 from settings import * 
 from scripts import * 
-from camera import *
+from camera import camGroupY
 from attack import *
 from tiling import Tile
 from player import Player
@@ -81,8 +81,8 @@ class level:
             self.attack.kill()
         self.attack = None
     
-    def render(self, deltaTime = 1):
+    def render(self):
         self.visibleSprites.customDraw(self.player)
-        self.visibleSprites.update(deltaTime)
+        self.visibleSprites.update()
+        self.visibleSprites.enemy_update(self.player)
         self.ui.display(self.player)
-    

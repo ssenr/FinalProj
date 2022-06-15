@@ -17,7 +17,7 @@ class Player(Entity):
         self.status = 'up'
            
         # X, Y 2D Vector
-        self.speed = 125
+        self.speed = 5
         
         self.invisibleSprites = invisibleSprites
         
@@ -128,9 +128,9 @@ class Player(Entity):
         self.image = animation[int(self.frameIndex)]
         self.rect = self.image.get_rect(center = self.hitbox.center)
         
-    def update(self, deltaTime):
+    def update(self):
         self.input()
         self.cooldowns()
         self.getStatus()
         self.animate()
-        self.plrMove(self.speed, deltaTime)
+        self.plrMove(self.speed)
