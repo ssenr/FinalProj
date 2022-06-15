@@ -18,10 +18,20 @@ iconPath = "data/img/testIcon.jpg"
 loadingFrame = "data/graphics/anim_mc/up_idle/up_idle0000.png"
 
 # Weapons
-attack_data ={
+attack_data = {
     'sword': {
         'cooldown': 100,
         'damage' : 20,
         'graphic': None
     }
+}
+
+# Enemy
+skeleton_data= {
+    'health': 100,
+    'damage': 10,
+    'speed': 125,
+    'resistance': 3,
+    'attack_radius': 120,
+    'notice_radius': 400
 }

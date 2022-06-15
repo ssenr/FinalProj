@@ -13,7 +13,7 @@ def importCSV(path):
 
 def importFolder(path):
     surfs = []
-    for _,__,imgFiles in walk(path):
+    for x,y,imgFiles in walk(path):
         for image in imgFiles:
             fullPath = path + '/' + image
             imageSurf = pygame.image.load(fullPath).convert_alpha()

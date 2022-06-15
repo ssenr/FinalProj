@@ -28,7 +28,16 @@ class Player(pygame.sprite.Sprite):
         self.attackTime = None
         self.attackInstance = attackInstance
         self.endAttack = endAttack
-    
+
+        # Stats
+        self.stats = {
+            'health': 70,
+        }
+        self.health = self.stats['health']
+        self.kills = 0
+        
+        
+        
     def plrAnims(self):
         animPath = "data/graphics/anim_mc/"
         self.animations = {
@@ -54,7 +63,7 @@ class Player(pygame.sprite.Sprite):
             fullPath = animPath + animation
             self.animations[animation] = importFolder(fullPath)
     
-    def input(self):     
+    def input(self):
         if not self.attacking:
             keys = pygame.key.get_pressed()
             # X Movement
@@ -81,7 +90,6 @@ class Player(pygame.sprite.Sprite):
                 self.attacking = True
                 self.attackTime = pygame.time.get_ticks()
                 self.attackInstance()
-                # print('attack')
         
     def getStatus(self):
         # Idle Status

@@ -7,6 +7,7 @@ from attack import *
 from tiling import Tile
 from player import Player
 from random import choice
+from ui import UI
 # Level Classes
 # Each level has slightly different behaviour
 # While creating different classes kind of defeats the purpose of using a class
@@ -25,8 +26,11 @@ class level:
         # Misc.
         self.status = False
         
-        # Test
+        # Create Map
         self.initMap()
+        
+        # UI
+        self.ui = UI()
     
     def initMap(self):
         mapData = {
@@ -73,4 +77,5 @@ class level:
     def render(self, deltaTime = 1):
         self.visibleSprites.customDraw(self.player)
         self.visibleSprites.update(deltaTime)
+        self.ui.display(self.player)
     
