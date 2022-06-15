@@ -20,4 +20,3 @@ def importFolder(path):
             surfs.append(imageSurf)
             
     return surfs
-            

@@ -10,13 +10,33 @@ class Tile(pygame.sprite.Sprite):
         self.spriteType = spriteType
         self.image = surf
         
+        match self.spriteType:
+            case 'hard_boundary':
+                self.rect = self.image.get_rect(topleft = pos)
+                self.hitbox = self.rect.inflate(0,25)
+            case 'wall_boundary':
+                self.rect = self.image.get_rect(topleft = pos)
+                self.hitbox = self.rect.inflate(0,-5)
+            case 'pillar':
+                self.rect = self.image.get_rect(topleft = (pos[0] + 5, pos[1]))
+                self.hitbox = self.rect.inflate(0,-5)
+            case _:
+                self.rect = self.image.get_rect(topleft = pos)
+                self.hitbox = self.rect.inflate(0,0)
+        
+        
+        
         #Offset Config
-        if spriteType == 'trees':
-            self.rect = self.image.get_rect(topleft = pos)
-            self.hitbox = self.rect.inflate(-30,0)
-        else:
-            self.rect = self.image.get_rect(topleft = pos)
-            self.hitbox = self.rect.inflate(0,25)
+        # Make with dictionary l8r
+        # if spriteType == 'hard_boundary':
+        #     self.rect = self.image.get_rect(topleft = pos)
+        #     self.hitbox = self.rect.inflate(0,0)
+        # elif spriteType == 'wall_boundary':
+        #     self.rect = self.image.get_rect(topleft = pos)
+        #     self.hitbox = self.rect.inflate(0,-5)
+        # else:
+        #     self.rect = self.image.get_rect(topleft = pos)
+        #     self.hitbox = self.rect.inflate(0,0)
         
         # Making hitbox for tile smaller
         # self.hitbox = self.rect.inflate(0,25) 

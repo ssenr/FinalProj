@@ -14,6 +14,14 @@ scaleFac = 2.7
 # dirs.
 iconPath = "data/img/testIcon.jpg"
 
-# # Test
-testGirlImgPath = 'data/graphics/testSprites/girl_img_rescale.png'
-# testPostImgPath = 'data/graphics/SingleSprites/wood_post.png'
+# Player
+loadingFrame = "data/graphics/anim_mc/up_idle/up_idle0000.png"
+
+# Weapons
+attack_data ={
+    'sword': {
+        'cooldown': 100,
+        'damage' : 20,
+        'graphic': None
+    }
+}

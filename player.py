@@ -4,10 +4,10 @@ from scripts import *
 
 # pygame.sprite.Sprite for inheritance
 class Player(pygame.sprite.Sprite):
-    def __init__(self,pos,groups, invisibleSprites):
+    def __init__(self,pos,groups, invisibleSprites, attackInstance, endAttack):
         # initiate class
         super().__init__(groups)
-        self.image = pygame.image.load(testGirlImgPath).convert_alpha()
+        self.image = pygame.image.load(loadingFrame).convert_alpha()
         self.rect = self.image.get_rect(topleft = pos)
         self.hitbox = self.rect.inflate(0,-26)
         
@@ -24,8 +24,10 @@ class Player(pygame.sprite.Sprite):
         self.invisibleSprites = invisibleSprites
         
         self.attacking = False
-        self.attackCooldown = 400
+        self.attackCooldown = 500
         self.attackTime = None
+        self.attackInstance = attackInstance
+        self.endAttack = endAttack
     
     def plrAnims(self):
         animPath = "data/graphics/anim_mc/"
@@ -43,27 +45,18 @@ class Player(pygame.sprite.Sprite):
             'rght_idle': [],    # Done
             
             # Attack Keys
-            'up_attack': [],
-            'dwn_attack': [],
-            'lft_attack': [],
-            'rght_attack': []
+            'up_attack': [],    # Done
+            'dwn_attack': [],   # Done
+            'lft_attack': [],   # Done
+            'rght_attack': []   # Done
         }
         for animation in self.animations.keys():
             fullPath = animPath + animation
             self.animations[animation] = importFolder(fullPath)
     
-    def input(self):
+    def input(self):     
         if not self.attacking:
             keys = pygame.key.get_pressed()
-            
-            # Attack
-            for event in pygame.event.get():
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    if event.button == 1:
-                        self.attacking = True
-                        self.attackTime = pygame.time.get_ticks()
-                        print('attack')
-            
             # X Movement
             if keys[pygame.K_a]:
                 self.direction.x = -1
@@ -83,17 +76,24 @@ class Player(pygame.sprite.Sprite):
                 self.status = 'dwn'
             else:
                 self.direction.y = 0
+            
+            if keys[pygame.K_LCTRL]:
+                self.attacking = True
+                self.attackTime = pygame.time.get_ticks()
+                self.attackInstance()
+                # print('attack')
         
     def getStatus(self):
         # Idle Status
         if self.direction.x == 0 and self.direction.y == 0:
-            if not 'idle' in self.status and not 'attack' in self.status and not 'run' in self.status:
+            if not 'idle' in self.status and not 'attack' in self.status:
                 self.status = self.status + '_idle'
         
         # Attack Status
         if self.attacking:
             self.direction.x = 0
             self.direction.y = 0
+            self.animationSpeed += 0.17
             if not 'attack' in self.status:
                 if 'idle' in self.status:
                     self.status = self.status.replace('_idle', '_attack')
@@ -101,8 +101,9 @@ class Player(pygame.sprite.Sprite):
                     self.status = self.status +'_attack'
         # Stop Attacking
         else:
+            self.animationSpeed = 0.5
             if 'attack' in self.status:
-                self.status = self.status.repace('_attack', '')
+                self.status = self.status.replace('_attack', '')
     
     def plrMove(self, speed, deltaTime = 1):
         # Convert/Normalize to unit vector
@@ -117,10 +118,10 @@ class Player(pygame.sprite.Sprite):
         # Center Sprite about Hitbox Center
         self.rect.center = self.hitbox.center
         
-    def collide(self, check):
+    def collide(self, plane):
         # Check for X Collisions
         # Hitbox based collisions 
-        if check == "X":
+        if plane == "X":
             for sprite in self.invisibleSprites:
                 if sprite.hitbox.colliderect(self.hitbox):
                     if self.direction.x > 0: # moving right based on var multiplied by speed [delta time later]
@@ -128,7 +129,7 @@ class Player(pygame.sprite.Sprite):
                     if self.direction.x < 0:
                         self.hitbox.left = sprite.hitbox.right
         # Check for Y Collisions
-        if check == "Y":
+        if plane == "Y":
             for sprite in self.invisibleSprites:
                 if sprite.hitbox.colliderect(self.hitbox):
                     if self.direction.y > 0:
@@ -141,6 +142,7 @@ class Player(pygame.sprite.Sprite):
         if self.attacking:
             if currentTime - self.attackTime >= self.attackCooldown:
                 self.attacking = False
+                self.endAttack()
     
     def animate(self):
         animation = self.animations[self.status]
