@@ -22,6 +22,8 @@ class level:
         # Sprite Groups
         self.visibleSprites = camGroupY()
         self.invisibleSprites = pygame.sprite.Group()
+        self.damageSprites = pygame.sprite.Group()
+        self.enemySprites = pygame.sprite.Group()
         self.attack = None
         
         # Misc.
@@ -71,18 +73,33 @@ class level:
                                     self.endAttack
                                     )
                             else:
-                                Enemy((x,y),[self.visibleSprites],self.invisibleSprites)
+                                Enemy(
+                                    (x,y),
+                                    [self.visibleSprites,self.enemySprites],
+                                    self.invisibleSprites
+                                    )
                                   
     def attackInstance(self):
-        self.attack = attack(self.player, [self.visibleSprites])
+        self.attack = attack(self.player, [self.visibleSprites, self.damageSprites])
     
     def endAttack(self):
         if self.attack:
             self.attack.kill()
         self.attack = None
     
+    def attackLogic(self):
+        if self.damageSprites:
+            for damage in self.damageSprites:
+                collisionList = pygame.sprite.spritecollide(damage,self.enemySprites, False)
+                if collisionList:
+                    for sprite in collisionList:
+                        sprite.getDamage(self.player)
+                        
+    
+    
     def render(self):
         self.visibleSprites.customDraw(self.player)
         self.visibleSprites.update()
         self.visibleSprites.enemy_update(self.player)
+        self.attackLogic()
         self.ui.display(self.player)

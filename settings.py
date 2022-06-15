@@ -23,21 +23,12 @@ player_data = {
     'canAttack': True
 }
 
-# Weapons
-attack_data = {
-    'sword': {
-        'cooldown': 100,
-        'damage' : 20,
-        'graphic': None
-    }
-}
-
 # Enemy
 skeleton_data= {
-    'health': 100,
+    'health': 80,
     'damage': 10,
     'speed': 4.25,
-    'knockback': 3,
+    'knockback': -4,
     'attack_radius': 50,
-    'notice_radius': 300
+    'notice_radius': 75
 }

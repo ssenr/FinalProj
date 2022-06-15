@@ -29,6 +29,10 @@ class Enemy(Entity):
         self.attackCooldown = 400
         self.animationSpeed += 0.4
         
+        self.vulnerable = True
+        self.timeHit = None 
+        self.invincibleDuration = 400
+        
     def importGraphics(self):
         animPath = "data/graphics/anim_enemy/"
         self.animations = {
@@ -49,7 +53,14 @@ class Enemy(Entity):
             'up_attack': [],    # Done
             'dwn_attack': [],   # Done
             'lft_attack': [],   # Done
-            'rght_attack': []   # Done
+            'rght_attack': [],  # Done
+            
+            # Knock Back
+            'impact_up': [],    # Done
+            'impact_dwn': [],   # Done
+            'impact_lft': [],   # Done
+            'impact_rght': []   # Done
+            
         }
         for animation in self.animations.keys():
             fullPath = animPath + animation
@@ -142,24 +153,78 @@ class Enemy(Entity):
     def animate(self):
         animation = self.animations[self.status]
         self.frameIndex += self.animationSpeed
-        if self.frameIndex >= len(animation):
-            if 'attack' in self.status:
-                self.canAttack = True
-            self.frameIndex = 0
-        self.image = animation[int(self.frameIndex)]
-        self.rect = self.image.get_rect(center = self.hitbox.center)
         
+        if not self.vulnerable:
+            alpha = self.flicker()
+            self.image.set_alpha(alpha)
+            
+            if self.direction.x < 0:
+                animation = self.animations['impact_rght']
+            elif self.direction.x > 0:
+                animation = self.animations['impact_lft']
+            
+            if self.direction.y < 0:
+                animation = self.animations['impact_dwn']
+            elif self.direction.y > 0:
+                animation = self.animations['impact_up']
+            
+            if self.frameIndex >= len(animation):
+                self.frameIndex = 0
+            self.image = animation[int(self.frameIndex)]
+            self.rect = self.image.get_rect(center = self.hitbox.center)
+        else:
+            self.image.set_alpha(255)
+            if self.frameIndex >= len(animation):
+                if 'attack' in self.status:
+                    self.canAttack = True
+                self.frameIndex = 0
+            self.image = animation[int(self.frameIndex)]
+            self.rect = self.image.get_rect(center = self.hitbox.center)
+        
+        # if not self.vulnerable:
+        #     alpha = self.flicker()
+        #     self.image.set_alpha(alpha)
+        # else:
+        #     self.image.set_alpha(255)
+            
     def cooldown(self):
+        currentTime = pygame.time.get_ticks()
         if not self.canAttack:
-            currentTime = pygame.time.get_ticks()
             if currentTime - self.attackTime >= self.attackCooldown:
                 self.canAttack = True
+            
+        if not self.vulnerable:
+            if currentTime - self.timeHit >= self.invincibleDuration:
+                self.vulnerable = True
+            
     
+    def getDamage(self,player):
+        if self.vulnerable:
+            self.direction = self.getDirDist(player)[1]
+            dmg = player_data['damage']
+            self.health -= dmg
+            
+            self.timeHit = pygame.time.get_ticks()
+            self.vulnerable = False
+            
+    def ifDead(self):
+        if self.health <= 0:
+            self.kill()
+
+    def hitReaction(self):
+        if not self.vulnerable:
+            self.direction *= self.knockback
+            if 'attack' in self.status:
+                self.status.replace('_attack', '')
+    
+
     def update(self):
+        self.hitReaction()
         self.plrMove(self.speed)
         self.animate()
         self.cooldown()
-    
+ 
     def enemy_update(self, player):
         self.getStatus(player)
         self.actions(player)
+        self.ifDead()

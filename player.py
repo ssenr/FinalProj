@@ -26,11 +26,9 @@ class Player(Entity):
         # Stats
         self.health = player_data['health']
         self.speed = player_data['speed']
+        self.damage = player_data['damage']
         self.kills = 0
-
-        
-        
-        
+   
     def plrAnims(self):
         animPath = "data/graphics/anim_mc/"
         self.animations = {
@@ -122,7 +120,7 @@ class Player(Entity):
         
         self.image = animation[int(self.frameIndex)]
         self.rect = self.image.get_rect(center = self.hitbox.center)
-        
+    
     def update(self):
         self.input()
         self.cooldowns()
