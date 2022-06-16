@@ -1,3 +1,24 @@
+# We have different types of sprites depending on he state and direction the enemy is facing
+# we import those based on a script in scripts.py that imports the entire folder as a list and returns it
+
+# Initially I thought of using a path finding algorithim, especially since there is one native in python, however
+# it didn't work as intended and kept giving me strange animation errors where the correct one wouldn't call, so I had to settle for my shoddy understanding of vector math
+# Basically, I store the vector of the center of the enemys hitbox, and take the vector of the player, subract them to find the vector of the enemy to player
+# I store both the distance by calculating the magnitude, as well as the direction by normalizing the vector to a unit vector and then storing it (while also accounting for null vector)
+
+# Since we are reading animations from folder paths, I use get status to 1. find the proper status of the enemy (if its idling, running or attacking) and then making sure
+# the folder paths is correct by using various string methods
+# Animations are based of a var called self.status, so in the actions method I make sure that the right status is being called for the right action
+# In the animate method, we find the right animation set in the animations dictionary and set the right image based off an index and the length of the animation
+
+# There are defined cooldowns for how much an enemy can attack and get hit, we used a delta time to calculate that
+# In get damage a sound is played and the amount of damage the player does is subracted from the enemies health
+
+# in isDead we check if the enemies dead via healh and if it is kill the sprite
+
+# There are two types of update
+# in the sprite .update method, its position (movement and animations) are updated therefore it can be drawn in the group update call in levels.py
+
 import pygame
 from settings import *
 from scripts import *
@@ -120,8 +141,6 @@ class Enemy(Entity):
             if not 'attack' in self.status:
                 self.status = self.status + '_idle'
                 
-        # elif not 'idle' in self.status and not 'attack' in self.status and not 'run' in self.status:
-        #     self.status = self.status + '_idle'
     def actions(self, player):
         if 'attack' in self.status:
             self.direction = self.getDirDist(player)[1]
@@ -194,12 +213,6 @@ class Enemy(Entity):
             self.image = animation[int(self.frameIndex)]
             self.rect = self.image.get_rect(center = self.hitbox.center)
         
-        # if not self.vulnerable:
-        #     alpha = self.flicker()
-        #     self.image.set_alpha(alpha)
-        # else:
-        #     self.image.set_alpha(255)
-            
     def cooldown(self):
         currentTime = pygame.time.get_ticks()
         if not self.canAttack:
@@ -210,7 +223,6 @@ class Enemy(Entity):
             if currentTime - self.timeHit >= self.invincibleDuration:
                 self.vulnerable = True
             
-    
     def getDamage(self,player):
         if self.vulnerable:
             self.enemyDamage.play()

@@ -1,3 +1,7 @@
+# Takes player information passed in through player object and then displays it through a set of sprites
+# gets the surface of the screen
+# Then gets all the alpha images and displays them to the surface based on the status of the player
+
 import pygame
 from settings import *
 
@@ -67,5 +71,5 @@ class UI:
             areaRect = areaSurf.get_rect(topleft = (15, 15))
             self.displaySurf.blit(areaSurf, areaRect)
         else:
-            print('dead')
+            pass
         

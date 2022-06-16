@@ -1,3 +1,18 @@
+# Initialize stats and sound in the init method
+# read the anis from their respective paths
+
+# Take inputs and set the status based on the unit vector
+# like the enemy, the sprites are controlled by a self.status value thats global
+# get the status based on the self.status thats changed in the input method
+# cooldowns are determined based on the cooldown set in the init method
+# also have an invincibility period in which we can't be attacked multiple times (this also sovles another issue I had highlighted below)
+# when I would get the damage from the enemy, the function would essentially be called multiple tiems a second, and without sleeping the entire program I didn't know how to solve it
+# my solution was have an invulnerability status so we can't be attacked more than once in a section
+# at some points the enemies used to 1 hit ko the player 
+# we pass in an index, and multiply it by a float value to determine which image to use
+# we figure out if the player is dead and change a variable in the player data
+# sprite update method that moves player and basically calls all the methods to make the player do stuff
+
 import pygame
 from entity import Entity
 from settings import * 

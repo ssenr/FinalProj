@@ -1,3 +1,8 @@
+# 2 different types of menus
+# Enter the menu loop when the game starts, MainMenu inherits from Menu() and uses the various game initialized vars to render and place things on the screen
+# DeathMenu is quite a bit simpler with just a quit and images/font renders
+# I initially tried a retry system but I had horrid FPS issues on each interation dropping upwards of 25% sometimes so I decided to scrap the idea
+
 import pygame
 from settings import *
 from sys import exit

@@ -1,3 +1,9 @@
+# This is the super class for all entities in the game
+# it has a move method that takes the direction unit vector and moves it according to a speed value
+
+# it also checks for collisions with the bounds (stored in invisible sprites)
+
+
 import pygame
 from math import sin
 

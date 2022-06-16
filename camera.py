@@ -1,7 +1,17 @@
+# This is the camera file for the game
+# The cameraGroupY Class inherits from sprite group, so at it's basics, it's just a sprite group with additional properties
+# I use the camera to draw what's on the screen for the viewer 
+# this is done in the customDraw method
+# basically, I load the base floor in the init method
+# and for every sprite that's in this group (called visible sprites), we sort them based off their y position
+# This gives them fake depth
+# For scaling the camera in, I create a another surface, and scale it in based on it's size in vector format * a scale factor found in settings.py
+
+# enemy update is also here, basicaly we call it's update method if it has the sprite type attribute
+# (sprite type) is used to determine what type of tile it is 
+# and if its and enemy
 import pygame
 from settings import *
-from enemy import Enemy
-
 # Camnera Class
 class camGroupY(pygame.sprite.Group):
     def __init__(self):

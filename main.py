@@ -1,3 +1,7 @@
+# Basic Game loop
+# Initially I made it a class for a levelling system I wanted to implement
+# However, the code alredy takes a long time to load, so I felt like adding different instances without proper optimizations would do more harm than good
+# Also the framework I had though of for levelling wasn't working out too well so I stopped
 # Dependencies
 import pygame
 from sys import exit

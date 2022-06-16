@@ -1,3 +1,7 @@
+# This file controls the attack hitbox for the player
+# Basically, it spawns a small transparent box in the direction that the player was facing
+# The transparent box isn't visible to the end-user but it collides with the enemy, and thats how damage and collision works in the game
+
 import pygame
 from settings import *
 

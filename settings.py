@@ -1,3 +1,5 @@
+# whole bunch of data used within other game files
+# sound files, redudant data is stored here to keep the code a bit cleaner 
 from random import randrange
 
 # Game Info

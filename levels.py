@@ -1,3 +1,14 @@
+# This is where most of the things occur and are called
+# we init the different groups for different types of sprites, like those that are drawn are drawn in camera view, bounds are drawn in invisible sprites etc.
+# On init, we also create the map, which uses nested for loops to draw the different bounds as well as spawn entities according to values in a .csv file (from tiled)
+# When the map is created so is the player
+
+# Attack Instance with proper params and the killing of the attack sprite is also passed to the player so it can be determined it they hit an enemy of not
+# endAttack just kills the hitbox sprite so if another enemy walks through it and the sprite is still there they dont take damage
+
+# The attack logic is simple, for every sprite that takes damage, store the collisions in a list, and then get the damage with player
+
+# Then we render all the visible sprites, call their updates so they can do their own logic as well as keep calling attack logic for future updates
 # Pygame Import
 import pygame
 from sys import exit
@@ -11,10 +22,7 @@ from player import Player
 from random import choice
 from ui import UI
 from enemy import Enemy
-# Level Classes
-# Each level has slightly different behaviour
-# While creating different classes kind of defeats the purpose of using a class
-# With classes I can easier create instances and have cleaner code
+
 class level:
     def __init__(self):
         

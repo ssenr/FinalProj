@@ -1,3 +1,9 @@
+# create a sprite based on every sprite given
+# we have a spritetpye which used to matter but now not so much
+# for every bound change the rect (so collisions are less or more frequent)
+# mainly use this to help with clipping issues, with the downside that enemies may get stuck on a tile if the vector direction crosses it
+# make a rect of the sprite image and make its top left equal to the position of the screen that is passed in the nested for loop in levels.py
+
 import pygame
 from settings import * 
 
@@ -23,20 +29,3 @@ class Tile(pygame.sprite.Sprite):
             case _:
                 self.rect = self.image.get_rect(topleft = pos)
                 self.hitbox = self.rect.inflate(0,0)
-        
-        
-        
-        #Offset Config
-        # Make with dictionary l8r
-        # if spriteType == 'hard_boundary':
-        #     self.rect = self.image.get_rect(topleft = pos)
-        #     self.hitbox = self.rect.inflate(0,0)
-        # elif spriteType == 'wall_boundary':
-        #     self.rect = self.image.get_rect(topleft = pos)
-        #     self.hitbox = self.rect.inflate(0,-5)
-        # else:
-        #     self.rect = self.image.get_rect(topleft = pos)
-        #     self.hitbox = self.rect.inflate(0,0)
-        
-        # Making hitbox for tile smaller
-        # self.hitbox = self.rect.inflate(0,25) 
