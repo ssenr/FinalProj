@@ -3,6 +3,7 @@ import pygame
 from sys import exit
 from settings import *
 from levels import *
+from menu import MainMenu
 
 # Game Class
 # When code scales, it will be much easier to modify this class rather than a function
@@ -22,15 +23,22 @@ class Game:
         
         # Init Level One
         self.level = level()
-    
+        self.playing = True
+        self.startMenu = MainMenu(self)
+        
+        
+        # BG Music
+        
     # Game Loop
     def run(self):
-        while True:
+        self.startMenu.displayMenu()
+        while self.playing:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
+                    self.startMenu.running = False
                     pygame.quit()
                     exit()
-                    
+                                  
             # Game Setup
             self.screen.fill(blackRGB)
                 

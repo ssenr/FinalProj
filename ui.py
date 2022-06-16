@@ -29,32 +29,43 @@ class UI:
             'vignette': "data/ui/post-processing/vignette.png",
             'scratches': "data/ui/post-processing/sctaches.png"
         }
-        
+    
     
     def display(self,player):
-        # Init Post Processing
-        # Vignette
-        self.vignetteImg = pygame.image.load(self.postProcessing['vignette']).convert_alpha()
-        self.vignetteRect = self.vignetteImg.get_rect()
-        self.displaySurf.blit(self.vignetteImg, self.vignetteRect)
-        
-        # Scratches
-        self.scratchImg = pygame.image.load(self.postProcessing['scratches']).convert_alpha()
-        self.scratchRect = self.scratchImg.get_rect()
-        self.displaySurf.blit(self.scratchImg, self.scratchRect)
-        
-        # Load Frame
-        self.frameIMG = pygame.image.load("data/ui/elements/frame.png").convert_alpha()
-        self.frameRect = self.frameIMG.get_rect()
-        self.displaySurf.blit(self.frameIMG,self.frameRect)
-        
-        # Load Bar
-        self.healthBar = pygame.image.load(self.healthBars[player.health]).convert_alpha()
-        self.healthRect = self.healthBar.get_rect()
-        self.displaySurf.blit(self.healthBar,self.healthRect)
-        
-        # Load Sword
-        self.sword_stateIMG = pygame.image.load(self.swordStates[player_data['canAttack']]).convert_alpha()
-        self.sword_stateRect = self.sword_stateIMG.get_rect()
-        self.displaySurf.blit(self.sword_stateIMG,self.sword_stateRect)
+        if player.aliveStatus == True:
+            # Init Post Processing
+            # Vignette
+            self.vignetteImg = pygame.image.load(self.postProcessing['vignette']).convert_alpha()
+            self.vignetteRect = self.vignetteImg.get_rect()
+            self.displaySurf.blit(self.vignetteImg, self.vignetteRect)
+            
+            # Scratches
+            self.scratchImg = pygame.image.load(self.postProcessing['scratches']).convert_alpha()
+            self.scratchRect = self.scratchImg.get_rect()
+            self.displaySurf.blit(self.scratchImg, self.scratchRect)
+            
+            # Load Frame
+            self.frameIMG = pygame.image.load("data/ui/elements/frame.png").convert_alpha()
+            self.frameRect = self.frameIMG.get_rect()
+            self.displaySurf.blit(self.frameIMG,self.frameRect)
+            
+            # Load Bar
+            self.healthBar = pygame.image.load(self.healthBars[player.health // 2]).convert_alpha()
+            self.healthRect = self.healthBar.get_rect()
+            self.displaySurf.blit(self.healthBar,self.healthRect)
+            
+            # Load Sword
+            self.sword_stateIMG = pygame.image.load(self.swordStates[player.attacking]).convert_alpha()
+            # self.sword_stateIMG = pygame.image.load(self.swordStates[player_data['canAttack']]).convert_alpha()
+            self.sword_stateRect = self.sword_stateIMG.get_rect()
+            self.displaySurf.blit(self.sword_stateIMG,self.sword_stateRect)
+            
+            # Kill Counter
+            info = player.kills
+            font = pygame.font.Font("data/ui/DungeonFont.ttf", 30)
+            areaSurf = font.render(str(info), True, 'White')
+            areaRect = areaSurf.get_rect(topleft = (15, 15))
+            self.displaySurf.blit(areaSurf, areaRect)
+        else:
+            print('dead')
         

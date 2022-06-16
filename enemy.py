@@ -4,7 +4,7 @@ from scripts import *
 from entity import Entity
 
 class Enemy(Entity):
-    def __init__(self,pos,groups, invisibleSprites):
+    def __init__(self,pos,groups, invisibleSprites, damagePlayer, enemySprites):
         super().__init__(groups)
         self.spriteType = 'enemy'
         
@@ -18,7 +18,7 @@ class Enemy(Entity):
         
         # Stats
         self.health = skeleton_data['health']
-        self.damage = skeleton_data['damage']
+        self.attackDamage = skeleton_data['damage']
         self.speed = skeleton_data['speed']
         self.knockback = skeleton_data['knockback']
         self.attack_radius = skeleton_data['attack_radius']
@@ -32,6 +32,18 @@ class Enemy(Entity):
         self.vulnerable = True
         self.timeHit = None 
         self.invincibleDuration = 400
+        
+        self.damagePlayer = damagePlayer
+        
+        self.enemySprites = enemySprites
+        
+        # Sounds
+        self.enemyDeath = pygame.mixer.Sound(SFX['enemy_death']['file'])
+        self.enemyDeath.set_volume(SFX['enemy_death']['_vol'])
+        self.enemyDamage = pygame.mixer.Sound(SFX['enemy_damage']['file'])
+        self.enemyDamage.set_volume(SFX['enemy_damage']['_vol'])
+        self.slashSFX = pygame.mixer.Sound(SFX['enemy_swing']['file'])
+        self.slashSFX.set_volume(SFX['enemy_swing']['_vol'])
         
     def importGraphics(self):
         animPath = "data/graphics/anim_enemy/"
@@ -123,8 +135,9 @@ class Enemy(Entity):
             elif self.direction.y < 0:
                 self.status = 'up_attack'
             self.attackTime = pygame.time.get_ticks()
+            self.damagePlayer(self.attackDamage)
+            self.slashSFX.play()
             
-                  
         elif not '_attack' in self.status and not '_idle' in self.status:
             self.direction = self.getDirDist(player)[1]
             
@@ -200,6 +213,7 @@ class Enemy(Entity):
     
     def getDamage(self,player):
         if self.vulnerable:
+            self.enemyDamage.play()
             self.direction = self.getDirDist(player)[1]
             dmg = player_data['damage']
             self.health -= dmg
@@ -207,16 +221,18 @@ class Enemy(Entity):
             self.timeHit = pygame.time.get_ticks()
             self.vulnerable = False
             
-    def ifDead(self):
+    def ifDead(self, player):
         if self.health <= 0:
             self.kill()
+            player.kills += 1
+            self.enemyDeath.play()
 
     def hitReaction(self):
         if not self.vulnerable:
             self.direction *= self.knockback
+            
             if 'attack' in self.status:
                 self.status.replace('_attack', '')
-    
 
     def update(self):
         self.hitReaction()
@@ -227,4 +243,4 @@ class Enemy(Entity):
     def enemy_update(self, player):
         self.getStatus(player)
         self.actions(player)
-        self.ifDead()
+        self.ifDead(player)

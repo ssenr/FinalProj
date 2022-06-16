@@ -1,5 +1,7 @@
 # Pygame Import
 import pygame
+from sys import exit
+from menu import deathMenu
 from settings import * 
 from scripts import * 
 from camera import camGroupY
@@ -16,8 +18,9 @@ from enemy import Enemy
 class level:
     def __init__(self):
         
-        # DisplaySurf
+        # Main
         self.displaySurf = pygame.display.get_surface()
+        self.game_paused = False
         
         # Sprite Groups
         self.visibleSprites = camGroupY()
@@ -34,6 +37,17 @@ class level:
         
         # UI
         self.ui = UI()
+        
+        # A
+        bgSound = pygame.mixer.Sound(SFX['BG Music']['file'])
+        bgSound.set_volume(SFX['BG Music']['_vol'])
+        bgSound.play(loops = -1)
+        
+        ambience = pygame.mixer.Sound(SFX['ambient_sound']['file'])
+        ambience.set_volume(SFX['ambient_sound']['_vol'])
+        ambience.play(loops = -1)
+        
+        
     
     def initMap(self):
         mapData = {
@@ -76,7 +90,9 @@ class level:
                                 Enemy(
                                     (x,y),
                                     [self.visibleSprites,self.enemySprites],
-                                    self.invisibleSprites
+                                    self.invisibleSprites,
+                                    self.damagePlayer,
+                                    self.enemySprites
                                     )
                                   
     def attackInstance(self):
@@ -95,11 +111,21 @@ class level:
                     for sprite in collisionList:
                         sprite.getDamage(self.player)
                         
-    
-    
+    def damagePlayer(self, amount):
+        if self.player.vulnerable:
+            self.player.health -= amount
+            self.player.vulnerable = False
+            self.player.timeHurt = pygame.time.get_ticks() 
+
     def render(self):
-        self.visibleSprites.customDraw(self.player)
-        self.visibleSprites.update()
-        self.visibleSprites.enemy_update(self.player)
-        self.attackLogic()
-        self.ui.display(self.player)
+        if self.player.health <= 0:
+            self.deathMenu = deathMenu()
+            self.deathMenu.displayMenu()
+        else:
+            self.visibleSprites.customDraw(self.player)
+            self.ui.display(self.player)
+            self.visibleSprites.update()
+            self.visibleSprites.enemy_update(self.player)
+            self.attackLogic()
+    
+        

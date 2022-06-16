@@ -2,6 +2,7 @@ import pygame
 from entity import Entity
 from settings import * 
 from scripts import * 
+from menu import MainMenu
 
 # pygame.sprite.Sprite for inheritance
 class Player(Entity):
@@ -27,8 +28,19 @@ class Player(Entity):
         self.health = player_data['health']
         self.speed = player_data['speed']
         self.damage = player_data['damage']
+        self.aliveStatus = True
         self.kills = 0
-   
+        
+        self.vulnerable = True
+        self.timeHurt = None
+        self.invulnerabilityDuration = 800
+        
+        # Sounds
+        self.attackSound = pygame.mixer.Sound(SFX['sword']['file'])
+        self.attackSound.set_volume(SFX['sword']['_vol'])
+        self.runSound = pygame.mixer.Sound(SFX['footsteps']['file'])
+        self.runSound.set_volume(SFX['footsteps']['_vol'])
+        
     def plrAnims(self):
         animPath = "data/graphics/anim_mc/"
         self.animations = {
@@ -76,11 +88,13 @@ class Player(Entity):
                 self.status = 'dwn'
             else:
                 self.direction.y = 0
+
             
             if keys[pygame.K_LCTRL]:
                 self.attacking = True
                 self.attackTime = pygame.time.get_ticks()
                 self.attackInstance()
+                self.attackSound.play()
         
     def getStatus(self):
         # Idle Status
@@ -110,6 +124,9 @@ class Player(Entity):
             if currentTime - self.attackTime >= self.attackCooldown:
                 self.attacking = False
                 self.endAttack()
+        if not self.vulnerable:
+            if currentTime - self.timeHurt >= self.invulnerabilityDuration:
+                self.vulnerable = True
     
     def animate(self):
         animation = self.animations[self.status]
@@ -120,6 +137,16 @@ class Player(Entity):
         
         self.image = animation[int(self.frameIndex)]
         self.rect = self.image.get_rect(center = self.hitbox.center)
+        
+        if not self.vulnerable:
+            alpha = self.flicker()
+            self.image.set_alpha(alpha)
+        else:
+            self.image.set_alpha(255)
+    
+    def ifDead(self):
+        if self.health <= 0:
+            self.aliveStatus = False
     
     def update(self):
         self.input()
@@ -127,3 +154,4 @@ class Player(Entity):
         self.getStatus()
         self.animate()
         self.plrMove(self.speed)
+        self.ifDead()
